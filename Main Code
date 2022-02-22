@@ -1,0 +1,126 @@
+library(readr)
+
+SRN <- read_csv("C:/Desktop/SRN.csv", 
+                col_types = cols(ID = col_number(), NQ1 = col_factor(levels = c("-3", 
+                                                                                "-2", "-1", "0", "1", "2", "3")), 
+                                 NQ2 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 NQ3 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 NQ4 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 NQ5 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 NQ6 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3"))))
+
+SRP <- read_csv("C:/Desktop/SRP.csv", 
+                col_types = cols(ID = col_number(), PQ1 = col_factor(levels = c("-3", 
+                                                                                "-2", "-1", "0", "1", "2", "3")), 
+                                 PQ2 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 PQ3 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 PQ4 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 PQ5 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3")), 
+                                 PQ6 = col_factor(levels = c("-3", 
+                                                             "-2", "-1", "0", "1", "2", "3"))))
+factor_levels <- c("No Impact", "Minimal Impact", "Low Impact", "Neutral", "Some Impact", "Medium Impact", "High Impact")
+
+levels(SRP$PQ1) <- factor_levels
+
+levels(SRP$PQ2) <- factor_levels
+
+levels(SRP$PQ3) <- factor_levels
+
+levels(SRP$PQ4) <- factor_levels
+
+levels(SRP$PQ5) <- factor_levels
+
+levels(SRP$PQ6) <- factor_levels
+
+library(likert)
+
+nrow(SRP)
+
+SRP2 <- subset(SRP, ID < 100) 
+
+v1SRP <- SRP2[,substr(names(SRP2),1,2) == "PQ"]
+head(SRP2); ncol(SRP2)
+
+names(v1SRP) <- c(
+  PQ1="Highly predictable or stable political and social context.",
+  PQ2="Strong commitment from the leading agency.",
+  PQ3="High quality engagement with key stakeholders.",
+  PQ4="Well-defined and attainable scope of work.",
+  PQ5="Systematic progress monitoring and documentation.",
+  PQ6="Effective collaboration with other WRI teams added value.")
+str(v1SRP)
+
+v1SRP <- as.data.frame(v1SRP)
+
+p <- likert(v1SRP) 
+
+library(RColorBrewer)
+
+a <- likert.bar.plot(p, center = 4, low.color = "#0050A8", high.color = "#3E8A18",
+                     neutral.color = "dark grey", neutral.color.ramp = "white", colors = NULL,
+                     plot.percent.low = FALSE, plot.percent.high = FALSE,
+                     plot.percent.neutral = FALSE, plot.percents = FALSE, text.size = 5,
+                     text.color = "black", centered = TRUE, include.center = TRUE,legend = "",
+                     ordered = TRUE, wrap = 40, wrap.grouping = 40, width = 25,
+                     legend.position = "right",
+                     panel.strip.color = "#F0F0F0")
+                     
+a + theme(axis.text=element_text(size=13))
+
+plot(a)
+
+
+levels(SRN$NQ1) <- factor_levels
+
+levels(SRN$NQ2) <- factor_levels
+
+levels(SRN$NQ3) <- factor_levels
+
+levels(SRN$NQ4) <- factor_levels
+
+levels(SRN$NQ5) <- factor_levels
+
+levels(SRN$NQ6) <- factor_levels
+
+
+SRN2 <- subset(SRN, ID < 100)
+
+v1SRN <- SRN2[,substr(names(SRN2),1,2) == "NQ"]
+head(SRN2); ncol(SRN2)
+
+names(v1SRN) <- c(
+  NQ1="Highly unpredictable/ unstable political and social context.",
+  NQ2="Insufficient commitment from leading agency.",
+  NQ3="Low quality engagement with key stakeholders.",
+  NQ4="Poorly-defined and unattainable scope of work.",
+  NQ5="Inadequate progress monitoring and documentation.",
+  NQ6="Insufficient collaboration with internal teams, undermining project performance.")
+str(v1SRN)
+
+
+v1SRN <- as.data.frame(v1SRN)
+
+
+
+b <- likert(v1SRN)
+
+
+N <- likert.bar.plot(b, center = 4, low.color = "#0050A8", high.color = "#3E8A18",
+                     neutral.color = "dark grey", neutral.color.ramp = "white", colors = NULL,
+                     plot.percent.low = FALSE, plot.percent.high = FALSE,
+                     plot.percent.neutral = FALSE, plot.percents = FALSE, text.size = 4.5,
+                     text.color = "black", centered = TRUE, include.center = TRUE,
+                     ordered = TRUE, wrap = 40, wrap.grouping = 40, legend = "",
+                     legend.position = "right",
+                     panel.strip.color = "#F0F0F0" )
+
+N + theme(axis.text=element_text(size=13))
